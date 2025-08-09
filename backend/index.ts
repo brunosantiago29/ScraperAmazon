@@ -1,4 +1,4 @@
-// Importa as dependências principais
+// Import the main dependencies
 
 import express from 'express';
 import axios from 'axios';
@@ -12,18 +12,18 @@ app.use(cors({
 app.use(cors());
 const PORT = 3000;
 
-// Rota principal da API
+// Main API route
 app.get('/api/scrape', async (req, res) => {
   const keyword = req.query.keyword as string;
 
-  // Verifica se a palavra-chave foi informada
+// Check if the keyword was entered
   if (!keyword) return res.status(400).json({ error: 'Keyword is required' });
 
-// Monta a URL da Amazon com a palavra-chave pesquisada
-  const url = `https://www.amazon.com.br/s?k=${encodeURIComponent(keyword)}`;
+// Builds the Amazon URL with the searched keyword
+  const url = `https://www.amazon.com/s?k=${encodeURIComponent(keyword)}`;
   try {
-    // Faz a requisição HTTP para a Amazon
-    console.log(`Fazendo scraping da URL: ${url}`);
+   // Makes the HTTP request to Amazon
+    console.log(`Scraping the URL: ${url}`);
     const { data: html } = await axios.get(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
@@ -42,16 +42,16 @@ app.get('/api/scrape', async (req, res) => {
       }
     });
 
-    // Cria um DOM a partir do HTML retornado
+    // Create a DOM from the returned HTML
     const dom = new JSDOM(html);
     const document = dom.window.document;
 
-    // Seleciona todos os itens de resultado de produto na primeira página
+    // Select all product result items on the first page
     const items = [...document.querySelectorAll('div.s-result-item')];
     if (items.length === 0) {
-      return res.status(404).json({ error: 'Nenhum produto encontrado' });
+      return res.status(404).json({ error: 'No products found' });
     }
-    // Mapeia e extrai os dados de cada produto
+    // Maps and extracts data for each product
     const results = items.map((item) => {
       const rawTitle = item.querySelector('h2[aria-label]')?.getAttribute('aria-label') || '';
       const title = rawTitle.replace(/^Anúncio patrocinado\s*[-–—]?\s*/i, '');
@@ -61,23 +61,23 @@ app.get('/api/scrape', async (req, res) => {
       const relativeUrl = item.querySelector('h2 a')?.getAttribute('href') || '';
       const fullUrl = relativeUrl ? `https://www.amazon.com${relativeUrl}` : '';
       
-      // Apenas retorna se houver título e imagem (validação mínima)
+      // Only returns if there is a title and image (minimal validation)
       if (title && image) {
         return { title, rating, reviews, image };
       }
-      // Se não houver título ou imagem, retorna nulo
+      // If there is no title or image, returns null
       return null;
-    }).filter(Boolean);// Remove entradas nulas
+    }).filter(Boolean);// Remove null entries
 
-    await new Promise(resolve => setTimeout(resolve, 3000)); // espera 3 segundos
+    await new Promise(resolve => setTimeout(resolve, 3000)); // wait 3 seconds
 
-    res.json(results);// Retorna os produtos como JSON
+    res.json(results);// Returns products as JSON
 
   } catch (error) {
-    // Retorna erro em caso de falha no scraping
-    console.error('Erro ao fazer scraping:', (error as Error).message);
-    res.status(500).json({ error: 'Erro ao fazer scraping', message: (error as Error).message });
+    // Returns error if scraping fails
+    console.error('Error while scraping:', (error as Error).message);
+    res.status(500).json({ error: 'Error while scraping', message: (error as Error).message });
   }
 });
-// Inicia o servidor
+// Start the server
 app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
