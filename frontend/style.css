@@ -1,4 +1,4 @@
-/* Reset básico */
+/* Basic reset */
 * {
   margin: 0;
   padding: 0;
@@ -56,7 +56,7 @@ button:hover {
   background-color: #1a252f;
 }
 
-/* Grade com 4 produtos por linha */
+/* Grid with 4 products per line */
 .results {
   margin-top: 1.0rem;
   display: grid;
@@ -64,7 +64,7 @@ button:hover {
   gap: 1.5rem;
 }
 
-/* Responsividade */
+/* Responsiveness */
 @media (max-width: 900px) {
   .results {
     grid-template-columns: repeat(2, 1fr);
@@ -77,7 +77,7 @@ button:hover {
   }
 }
 
-/* Estilo individual do cartão de produto */
+/* Individual product card style */
 .product-card {
   background: #fafafa;
   border: 1px solid #ddd;
@@ -92,7 +92,7 @@ button:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Imagem do produto centralizada e padronizada */
+/* Centered and standardized product image */
 .product-card img {
   width: 160px;
   height: 160px;
@@ -100,7 +100,7 @@ button:hover {
   margin-bottom: 1rem;
 }
 
-/* Título do produto */
+/* Product title */
 .product-card h3 {
   font-size: 1rem;
   margin-bottom: 0.5rem;
@@ -122,7 +122,7 @@ button:hover {
   text-decoration: underline;
 }
 
-/* Avaliações e reviews */
+/* Ratings and reviews */
 .product-card p {
   font-size: 0.9rem;
   color: #555;
