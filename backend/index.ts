@@ -34,7 +34,7 @@ app.get('/api/scrape', async (req, res) => {
         'Pragma': 'no-cache',
         'Upgrade-Insecure-Requests': '1',
         'DNT': '1',
-        'Referer': 'https://www.amazon.com.br/',
+        'Referer': 'https://www.amazon.com/',
         'Sec-Fetch-Dest': 'document',
         'Sec-Fetch-Mode': 'navigate',
         'Sec-Fetch-Site': 'same-origin',
