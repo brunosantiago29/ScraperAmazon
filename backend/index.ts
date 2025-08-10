@@ -23,7 +23,6 @@ app.get('/api/scrape', async (req, res) => {
   const url = `https://www.amazon.com/s?k=${encodeURIComponent(keyword)}`;
   try {
    // Makes the HTTP request to Amazon
-    console.log(`Scraping the URL: ${url}`);
     const { data: html } = await axios.get(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
